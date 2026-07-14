@@ -1,0 +1,12 @@
+{
+    "name": "Analyze Github Code",
+    "version": "0.0.1",
+    "manifest_version": 3,
+    "description": "Get information of a Github Repository. Ask questions regarding it and get answer from power LLMs.",
+    "action": {
+        "default_title": "Get Github Repo Info using LLM",
+        "default_popup": "frontend/welcome.html"
+    },
+    
+    "permissions": ["activeTab", "storage"]
+}
