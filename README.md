@@ -25,3 +25,39 @@ After analyzing multiple files, it intelligently summarizes the key logic, workf
 
 4. Error Handling & Response Logging
 Displays user-friendly error messages when rate limits or token issues occur.
+
+## Setup & Usage
+
+### Prerequisites
+
+- Python 3.8+
+- Google Chrome
+- An OpenAI API key with access to GPT-4o-mini
+
+### 1. Run the backend
+
+```bash
+git clone https://github.com/ajayvardhan03/github_analyser.git
+cd github_analyser
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+```
+
+The Flask server starts on `http://localhost:8000`.
+
+### 2. Load the Chrome extension
+
+1. Open Chrome and go to `chrome://extensions`.
+2. Enable **Developer mode** (top right).
+3. Click **Load unpacked** and select the root of this repository (the folder containing `manifest.json`).
+4. Pin the extension for quick access.
+
+### 3. Analyze a repository
+
+1. Navigate to any GitHub repository page in Chrome.
+2. Click the extension icon and enter your OpenAI API key.
+3. Submit the current page's repository URL and wait for the AI-generated summary.
+
+Keep the local backend (`python app.py`) running while using the extension, since the popup sends requests to `http://localhost:8000`.
