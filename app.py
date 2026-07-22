@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, Response
 from flask_cors import cross_origin
 
 from analyze import AnalyzeRepo
@@ -20,7 +20,10 @@ def process():
         # Call AnalyzeRepo and get detailed summary
         summary_generator = AnalyzeRepo(openai_key, currentPageLink)
         result = summary_generator.run()
-        return render_template_string(result)
+        # result is HTML generated from the LLM's summary of arbitrary repo
+        # code, so it must not be run through Jinja2 (render_template_string
+        # would execute any {{ }} / {% %} syntax it happened to contain).
+        return Response(result, mimetype="text/html")
     except Exception as e:
         return str(e)
 
