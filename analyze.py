@@ -1,4 +1,6 @@
 import logging
+from urllib.parse import urlparse
+
 from LLM.scrap import scrap_repo
 
 logging.basicConfig(level=logging.INFO)
@@ -13,9 +15,15 @@ class AnalyzeRepo:
     def __init__(self, token, url):
         self.llm_token = token
 
-        parsed_url = url.split("/")  # Split URL based on /
-        self.github_owner = parsed_url[-2]  # Get the owner
-        self.github_repo_name = parsed_url[-1]  # Get the repo name
+        # The extension sends whatever GitHub page the user currently has open,
+        # which may be the repo root, a subpage (/issues, /tree/main, ...), or
+        # have a trailing slash. Taking the last two "/"-separated segments
+        # (the old approach) breaks on all of those. The owner/repo are always
+        # the first two path segments, so parse the URL path and use those.
+        path_parts = [part for part in urlparse(url).path.split("/") if part]
+        if len(path_parts) < 2:
+            raise ValueError(f"Could not parse a GitHub owner/repo from URL: {url}")
+        self.github_owner, self.github_repo_name = path_parts[0], path_parts[1]
         logger.info("Necessary variables set")
 
     def run(self):
